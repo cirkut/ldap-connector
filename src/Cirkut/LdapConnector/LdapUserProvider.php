@@ -1,4 +1,4 @@
-<?php namespace Dsdevbe\LdapConnector;
+<?php namespace Cirkut\LdapConnector;
 
 use adLDAP\adLDAP;
 use Illuminate\Contracts\Auth\Authenticatable;
@@ -33,12 +33,12 @@ class LdapUserProvider implements UserProviderInterface {
     public function retrieveById($identifier)
     {
         $userInfo = $this->adldap->user()->info($identifier, array('*'))[0];
-		
+
 		$credentials = array();
 		$credentials['username'] = $identifier;
-		
+
 		foreach($userInfo as $key => $value){
-			$credentials[$key] = $value[0];
+			$credentials[$key] = $value;
 		}
 
         return new LdapUser($credentials);
@@ -77,7 +77,7 @@ class LdapUserProvider implements UserProviderInterface {
             $userInfo = $this->adldap->user()->info($credentials['username'], array('*'))[0];
 
             foreach($userInfo as $key => $value){
-                $credentials[$key] = $value[0];
+                $credentials[$key] = $value;
             }
 
             return new LdapUser($credentials);

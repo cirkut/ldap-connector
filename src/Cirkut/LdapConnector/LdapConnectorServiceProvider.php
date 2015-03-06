@@ -1,4 +1,4 @@
-<?php namespace Dsdevbe\LdapConnector;
+<?php namespace Cirkut\LdapConnector;
 
 use Illuminate\Auth\Guard;
 use Illuminate\Support\ServiceProvider;
