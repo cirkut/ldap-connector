@@ -1,7 +1,7 @@
 {
     "name": "cirkut/ldap-connector",
     "description": "Easily authenticate with LDAP in Laravel",
-    "homepage": "https://github.com/dsdevbe/ldap-connector",
+    "homepage": "https://github.com/cirkut/ldap-connector",
     "keywords": ["Laravel", "Ldap"],
     "license": "MIT",
     "authors": [

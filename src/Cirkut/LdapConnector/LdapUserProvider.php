@@ -34,12 +34,26 @@ class LdapUserProvider implements UserProviderInterface {
     {
         $userInfo = $this->adldap->user()->info($identifier, array('*'))[0];
 
-		$credentials = array();
-		$credentials['username'] = $identifier;
+        $credentials = array();
+        $credentials['username'] = $identifier;
 
-		foreach($userInfo as $key => $value){
-			$credentials[$key] = $value;
-		}
+        foreach($userInfo as $key => $value){
+            switch ($key) {
+                case "memberof":
+                    $no_count = array();
+                    for ($i=0; $i < (count($value) -1); $i++) {
+                        $group = array();
+                        preg_match_all("/(.*?)(?=\,)/", $value[$i], $group);
+                        $the_group = substr($group[0][0], 3);
+                        $no_count[$i] = $the_group;
+                    }
+                    $credentials[$key] = $no_count;
+                    break;
+                default:
+                    $credentials[$key] = $value[0];
+                    break;
+            }
+        }
 
         return new LdapUser($credentials);
     }
@@ -77,7 +91,21 @@ class LdapUserProvider implements UserProviderInterface {
             $userInfo = $this->adldap->user()->info($credentials['username'], array('*'))[0];
 
             foreach($userInfo as $key => $value){
-                $credentials[$key] = $value;
+                switch ($key) {
+                    case "memberof":
+                        $no_count = array();
+                        for ($i=0; $i < (count($value) -1); $i++) {
+                            $group = array();
+                            preg_match_all("/(.*?)(?=\,)/", $value[$i], $group);
+                            $the_group = substr($group[0][0], 3);
+                            $no_count[$i] = $the_group;
+                        }
+                        $credentials[$key] = $no_count;
+                        break;
+                    default:
+                        $credentials[$key] = $value[0];
+                        break;
+                }
             }
 
             return new LdapUser($credentials);
